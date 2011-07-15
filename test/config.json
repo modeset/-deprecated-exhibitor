@@ -1,0 +1,9 @@
+{
+    "name": "My Exhibit"
+  , "data": "dir/name/exhibit.json"
+  , "transition": "slide"
+  , "sections": [
+      {"section":"cover"}
+    , {"section":"capabilities"}
+  ]
+}
