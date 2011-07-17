@@ -1,0 +1,15 @@
+
+Exhibit your [wo]manliness
+
+Usage:
+  exhibitor <command> [options]
+
+Commands <command>:
+  help, -h, --help            Output help information
+  version, -v, --version      Output the current version
+  convert                     Convert the exhibit
+
+Options [options]:
+-------------------------------------------------------------------------------
+Examples:
+  exhibitor convert config.json      Do something crazy

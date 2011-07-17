@@ -1,10 +1,10 @@
 
+var fs = require('fs')
 var path = require('path')
-var Exhibitor = require('../lib/exhibitor')
+var cli = __dirname + '/../lib/cli/';
+var Converter = require('../lib/cli/converter')
 var args = process.argv.slice(2)
 var silent = false
-var config_file = null
-var inspect = require('util').inspect
 
 // ----------------------------------------------------------------------------
 function notify(msg) {
@@ -21,40 +21,48 @@ function abort(msg) {
 function errormessage() {
   var msg = 'Error:'
   msg += '\n  Missing a configuration file'
-  msg += '\n  run "exhibitor --help" for more information'
+  msg += '\n  run "exhibitor help" for more information'
   return msg
+}
+
+function help() {
+  abort(fs.readFileSync(cli + 'help.txt', 'utf8'));
+}
+
+function convert(file) {
+  if (!file)
+    abort(errormessage());
+
+  var converter = new Converter(file);
+  var exhibit = converter.convert();
+  abort(exhibit)
 }
 
 // ----------------------------------------------------------------------------
 // Process the command line arguments
+if (args.length < 1) help()
+
 while (args.length) {
   var arg = args.shift();
   switch (arg) {
 
-    case '-h':
-    case '--help':
-      // abort(fs.readFileSync(templates + 'help.txt', 'utf8'));
+    case 'convert':
+      convert(path.join(process.cwd(), args.shift()))
     break;
 
     case '-v':
+    case 'version':
     case '--version':
+      abort('need to set the version')
       // abort(JSON.parse(fs.readFileSync(npm, 'utf8')).version);
     break;
 
-    case '-s':
-    case '--silent':
-      silent = true;
-    break;
-
-    default:
-      config_file = path.join(process.cwd(), arg);
+    case '-h':
+    case 'help':
+    case '--help':
+      help()
     break;
   }
 }
 
-if (!config_file)
-  abort(errormessage());
-
-var exhibitor = new Exhibitor(config_file);
-var exhibit = exhibitor.generate();
 
