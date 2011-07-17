@@ -6,7 +6,7 @@ Some more copy
 
 <hr />
 
-<!-- SLIDE bullets {transition: fade, date: 07.12.2011} -->
+<!-- SLIDE bullets {transition: fade, date: January 30} -->
 # Bullet Points
 
 * first point
@@ -15,38 +15,37 @@ Some more copy
 
 Below are some tests utilizing the features from the redcarpet gem.
 
-:hardwrap
+hardwrap
 double space 1  
 no space
 end of line
 
 
-:autolink
+autolink
 http://www.google.com/
 
-:tables
+tables
 
 aaa | bbbb
 -----|------
 hello|sailor
 
-:strikethrough
+strikethrough
 
-this is ~~striked text~~
-
-
-~~~ruby
-fenced code with squigglies
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-~~~
-
-:lax_htmlblock
+lax_htmlblock
 this is <a href="#">native link tag of html</a> in a paragraph
 
-:no_intraemphasis
+no_intraemphasis
 foo_bar_baz
 
-:space_header
+space_header
 #no space after the pound symbol means no header
+foo_bar_baz
+
+this is `some` code
+
+another line
+
+    Blah
+    blahh
+
