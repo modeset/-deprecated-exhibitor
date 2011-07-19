@@ -35,7 +35,7 @@ function convert(file) {
 
   var converter = new Converter(file);
   var exhibit = converter.convert();
-  abort(exhibit)
+  notify(exhibit)
 }
 
 // ----------------------------------------------------------------------------
@@ -62,7 +62,10 @@ while (args.length) {
     case '--help':
       help()
     break;
+
+    default:
+      help()
+    break;
   }
 }
-
 
