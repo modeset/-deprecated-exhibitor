@@ -4,7 +4,7 @@
   , "transition": "slide"
   , "sections": [
       {"section":"cover"}
-    , {"section":"capabilities"}
+    , {"section":"presentation"}
   ]
 }
 
