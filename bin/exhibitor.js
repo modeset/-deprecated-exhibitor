@@ -29,13 +29,19 @@ function help() {
   abort(fs.readFileSync(cli + 'help.txt', 'utf8'));
 }
 
-function convert(file) {
-  if (!file)
+function convert(file, output) {
+  if (!file || !output)
     abort(errormessage());
 
   var converter = new Converter(file);
   var exhibit = converter.convert();
-  notify(exhibit)
+  fs.writeFile(output, exhibit, 'utf8', function(err) {
+    if (err) {
+      abort(err)
+    }
+    console.log('converted: ' + output)
+    notify(exhibit)
+  })
 }
 
 // ----------------------------------------------------------------------------
@@ -47,7 +53,7 @@ while (args.length) {
   switch (arg) {
 
     case 'convert':
-      convert(path.join(process.cwd(), args.shift()))
+      convert(path.join(process.cwd(), args.shift()), path.join(process.cwd(), args.shift()))
     break;
 
     case '-v':
