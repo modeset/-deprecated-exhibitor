@@ -2,7 +2,7 @@
 var fs = require('fs')
 var path = require('path')
 var cli = __dirname + '/../lib/cli/';
-var Converter = require('../lib/cli/converter')
+var Exhibitor = require('../lib/cli/exhibitor')
 var args = process.argv.slice(2)
 var silent = false
 
@@ -29,11 +29,14 @@ function help() {
   abort(fs.readFileSync(cli + 'help.txt', 'utf8'));
 }
 
-function convert(file, output) {
-  if (!file || !output)
+function convert(input, output) {
+  if (!input || !output)
     abort(errormessage());
 
-  var converter = new Converter(file);
+  var exhibitor = new Exhibitor(input, output)
+  exhibitor.render()
+
+  /* var converter = new Converter(file);
   var exhibit = converter.convert();
   fs.writeFile(output, exhibit, 'utf8', function(err) {
     if (err) {
@@ -41,7 +44,7 @@ function convert(file, output) {
     }
     console.log('converted: ' + output)
     notify(exhibit)
-  })
+  }) */
 }
 
 // ----------------------------------------------------------------------------

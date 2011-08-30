@@ -3,8 +3,8 @@
   , "data": "dir/name/exhibit.json"
   , "transition": "slide"
   , "sections": [
-      {"section":"cover"}
-    , {"section":"presentation"}
+      {"section":"cover", "transition": "dissolve", "date": "08.29.2011"}
+    , {"section":"presentation", "transition": "swing"}
   ]
 }
 
