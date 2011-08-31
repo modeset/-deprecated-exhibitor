@@ -86,6 +86,28 @@
       var name = stripped.substr(space_index + 1)
       expect(name).toEqual('final_mkd');
     })
+
+    it('should find brackets in a string', function() {
+      var faux_str = '{transition:fade}'
+      var faux_obj = 'transition:fade'
+      expect(faux_str.replace(lexer.brackets, '')).toEqual(faux_obj)
+    })
+
+    it('should find colons in a string with a space', function() {
+      var faux_str1 = 'transition:fade'
+      var faux_str2 = 'transition: fade'
+      var faux_obj = 'transition:fade'
+      expect(faux_str1.replace(lexer.colons, ':')).toEqual(faux_obj)
+      expect(faux_str2.replace(lexer.colons, ':')).toEqual(faux_obj)
+    })
+
+    it('should find commas in a string with a space', function() {
+      var faux_str1 = 'transition:fade,date:january'
+      var faux_str2 = 'transition:fade, date:january'
+      var faux_obj = 'transition:fade,date:january'
+      expect(faux_str1.replace(lexer.commas, ',')).toEqual(faux_obj)
+      expect(faux_str2.replace(lexer.commas, ',')).toEqual(faux_obj)
+    })
   })
 
 }())

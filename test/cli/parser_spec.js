@@ -24,7 +24,20 @@
     it('should have a starting lookup directory', function() {
       expect(parser.config_dir).toEqual(dir)
     })
+  })
 
+  describe('#globalOptions', function() {
+    it('should find properties within the global object', function() {
+      var globals = parser.globalOptions()
+      expect(globals.transition).toBe('slide')
+    })
+  })
+
+  describe('#sectionOptions', function() {
+    it('should find properties within the section object', function() {
+      var section = parser.sectionOptions()
+      expect(section['cover'].transition).toBe('dissolve')
+    })
   })
 
   describe('#compile', function() {
