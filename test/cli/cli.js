@@ -21,6 +21,6 @@ process.argv.forEach(function (arg) {
   }
 })
 
-jasmine.executeSpecsInFolder(__dirname + "/cli/", function (runner, log) {
+jasmine.executeSpecsInFolder(__dirname, function (runner, log) {
 }, verbose, colored);
 

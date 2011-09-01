@@ -65,7 +65,7 @@
 
     it('should find just the property from a section comment', function() {
       var match1 = '<!-- SECTION cover -->'
-      var pattern = lexer.stripsect
+      var pattern = lexer.section_label
 
       expect(match1.match(pattern)).toBeTruthy()
       expect(match1.replace(pattern, '')).toEqual('cover')
