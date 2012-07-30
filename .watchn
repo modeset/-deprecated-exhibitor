@@ -1,0 +1,93 @@
+
+var exec = require('child_process').exec
+var cli_src = './lib/cli/'
+var cli_tests = './test/cli/'
+var spec_file = './test/interface/specs.js'
+var specs = './test/interface/specs/'
+var libs_src = './lib/interface/'
+var app_file = './lib/app.js'
+
+
+function notify(msg, growl) {
+  console.log(new Date().toTimeString() + ': ' + msg)
+  if (growl) {
+    exec('growlnotify -name '+  growl.name + ' -m "' + growl.msg + '"')
+  }
+}
+
+function result(name, error, pass, fail) {
+  if (error !== null) {
+    notify(error.message, {name: name, msg: fail})
+  } else {
+    notify(name + ' ' + pass)
+  }
+}
+
+module.exports.init = function(watchn) {
+
+  // jasmine node tests
+  watchn.watch('test', [cli_src, cli_tests], function(options) {
+    if (options.curr > options.prev) {
+      exec('make test', function(error, stdout, stderr) {
+        if (error) {
+          result('Jasmine Tests', error, 'passed', 'failed')
+          return;
+        }
+
+        var pattern = /\d+/gim
+        var status = watchn.trimANSI(stdout).match(pattern)
+        var len = status.length
+        var tests = parseInt(status[len - 3], 10)
+        var asserts = parseInt(status[len - 2], 10)
+        var failures = parseInt(status[len - 1], 10)
+        var msg = ''
+        msg += tests + ' test' +  ((tests === 1) ? ', ' : 's, ');
+        msg += asserts + ' assertion' +  ((asserts === 1) ? ', ' : 's, ');
+        msg += failures + ' failure' +  ((failures === 1) ? '' : 's');
+
+        if (failures === 0) {
+          result('Jasmine Tests', error, msg, 'failed')
+        }
+        else {
+          notify('Jasmine Tests ' + msg, {name: 'Jasmine Tests Failed', msg: msg})
+        }
+      })
+    }
+  })
+
+  // jasmine-dom specs
+  watchn.watch('specs', [spec_file, app_file], function(options) {
+    if (options.curr > options.prev) {
+      exec('make specs', function(error, stdout, stderr) {
+        if (error || stdout.match(/(Passed)/gi)) {
+          result('Interface Specs', error, 'passed', 'failed')
+
+        } else {
+          var matches = stdout.match(/(-)/gi).length
+          var msg = matches + ' spec' + ((matches === 1) ? '' : 's') + ' failed'
+          notify(stdout, {name: 'Jasmine Specs Failed', msg: msg})
+        }
+      })
+    }
+  })
+
+  // build out the specs file
+  watchn.watch('build_specs', [specs], function(options) {
+    if (options.curr > options.prev) {
+      exec('make build_specs', function(error, stdout, stderr) {
+        result('Specs', error, 'generated', 'build failed')
+      })
+    }
+  })
+
+  // build out the libs file
+  watchn.watch('build_libs', [libs_src], function(options) {
+    if (options.curr > options.prev) {
+      exec('make build_libs', function(error, stdout, stderr) {
+        result('Libs', error, 'generated', 'build failed')
+      })
+    }
+  })
+
+};
+
